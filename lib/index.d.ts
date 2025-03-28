@@ -33,6 +33,7 @@ declare class Lamb<T> {
     private choices;
     private constraints;
     private solutions;
+    private numSolutionsRequested;
     /**
      * Adds a variable and its possible values to the problem
      * @param variable The name assigned to the variable
@@ -47,9 +48,11 @@ declare class Lamb<T> {
     addConstraint(constraint: Constraint<T>): void;
     /**
      * Solves the constraint-satisfaction problem using backtracking
+     * @param numSolutionsRequested Represents the number of solutions desired - by default the solver find
+     * all solutions
      * @returns A list of all successful assignments
      */
-    solve(): Assignment<T>[];
+    solve(numSolutionsRequested?: number): Assignment<T>[];
     /**
      * Clears the state of the solver
      */

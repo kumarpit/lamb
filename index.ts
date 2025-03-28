@@ -5,7 +5,7 @@
  * https://github.com/kumarpit/lamb.js
  */
 
-import { DuplicateVariableError, EmptyChoicesError, EmptyVariablesError, InvalidVariableNameError } from './error';
+import { DuplicateVariableError, EmptyChoicesError, EmptyVariablesError, InvalidNumSolutions, InvalidVariableNameError } from './error';
 
 /**
  * Represents a constraint function that evaluates a set of variable assignments
@@ -39,6 +39,7 @@ class Lamb<T> {
     private choices: Choices<T> = {};
     private constraints: Constraint<T>[] = [];
     private solutions: Assignment<T>[] = [];
+    private numSolutionsRequested: number | null = null;
 
     /**
      * Adds a variable and its possible values to the problem
@@ -69,11 +70,19 @@ class Lamb<T> {
 
     /**
      * Solves the constraint-satisfaction problem using backtracking
+     * @param numSolutionsRequested Represents the number of solutions desired - by default the solver find 
+     * all solutions
      * @returns A list of all successful assignments
      */
-    solve(): Assignment<T>[] {
+    solve(numSolutionsRequested?: number): Assignment<T>[] {
         if (Object.keys(this.choices).length === 0) {
             throw new EmptyVariablesError("You must have atleast one variable defined to solve a problem");
+        }
+        if (numSolutionsRequested) {
+            if (numSolutionsRequested <= 0) {
+                throw new InvalidNumSolutions("You must request atleast 1 solution");
+            }
+            this.numSolutionsRequested = numSolutionsRequested;
         }
         this.solutions = [];
         this.backtrack({}, Object.keys(this.choices), 0);
@@ -87,6 +96,7 @@ class Lamb<T> {
         this.choices = {};
         this.constraints = [];
         this.solutions = [];
+        this.numSolutionsRequested = null;
     }
 
     /**
@@ -110,6 +120,10 @@ class Lamb<T> {
             assignment[variable] = value;
             this.backtrack(assignment, variables, index + 1);
             delete assignment[variable];
+
+            if (this.numSolutionsRequested && this.solutions.length === this.numSolutionsRequested) {
+                return;
+            }
         }
     }
 

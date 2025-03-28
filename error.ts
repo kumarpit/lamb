@@ -35,3 +35,9 @@ export class EmptyVariablesError extends LambError {
         super(message);
     }
 }
+
+export class InvalidNumSolutions extends LambError {
+    constructor(message: string) {
+        super(message);
+    }
+}

@@ -5,7 +5,11 @@
     "main": "index.js",
     "author": "Arpit Kumar (kumar.arpit77@yahoo.com)",
     "license": "MIT",
+    "scripts": {
+        "test": "jest"
+    },
     "devDependencies": {
+        "jest": "^29.7.0",
         "typescript": "^5.8.2"
     }
 }
