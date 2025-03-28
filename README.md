@@ -1,5 +1,3 @@
+# lamb.js
 
-  <h1><samp>backtrack.js</samp></h1>
-<samp>
-a generalized backtracking search library for JS
-</samp>
+A generalized backtracking search library for Javascript. Based on the John McCarthy's nondeterministic operator (`amb`).

@@ -1,8 +1,11 @@
 {
-  "name": "backtrack.js",
-  "version": "1.0.0",
-  "description": "A generalized backtracking search library",
-  "main": "index.js",
-  "author": "Arpit Kumar (kumar.arpit77@yahoo.com)",
-  "license": "MIT"
+    "name": "backtrack.js",
+    "version": "1.0.0",
+    "description": "A generalized backtracking search library",
+    "main": "index.js",
+    "author": "Arpit Kumar (kumar.arpit77@yahoo.com)",
+    "license": "MIT",
+    "devDependencies": {
+        "typescript": "^5.8.2"
+    }
 }
