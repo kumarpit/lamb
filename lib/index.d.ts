@@ -51,6 +51,10 @@ declare class Lamb<T> {
      */
     solve(): Assignment<T>[];
     /**
+     * Clears the state of the solver
+     */
+    clear(): void;
+    /**
      * Orchestrates the backtracking search
      * @param assignment The current (possibly incomplete) assignment
      * @param variables The list of all variables involved in this problem

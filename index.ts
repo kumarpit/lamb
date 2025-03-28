@@ -5,6 +5,7 @@
  * https://github.com/kumarpit/lamb.js
  */
 
+import { DuplicateVariableError, EmptyChoicesError, EmptyVariablesError, InvalidVariableNameError } from './error';
 
 /**
  * Represents a constraint function that evaluates a set of variable assignments
@@ -45,6 +46,15 @@ class Lamb<T> {
      * @param values The possible values this variable can take
      */
     addChoice(variable: string, values: T[]): void {
+        if (variable.trim() === "") {
+            throw new InvalidVariableNameError(`Invalid variable name ${variable}: Variable names must be a non-empty string`);
+        }
+        if (this.choices.hasOwnProperty(variable)) {
+            throw new DuplicateVariableError(`Variable ${variable} is already defined. Did you forget to clear Lamb state?`);
+        }
+        if (values.length === 0) {
+            throw new EmptyChoicesError(`Encountered emtpy choices for ${variable}: Choices cannot be empty`);
+        }
         this.choices[variable] = values;
     }
 
@@ -62,9 +72,21 @@ class Lamb<T> {
      * @returns A list of all successful assignments
      */
     solve(): Assignment<T>[] {
+        if (Object.keys(this.choices).length === 0) {
+            throw new EmptyVariablesError("You must have atleast one variable defined to solve a problem");
+        }
         this.solutions = [];
         this.backtrack({}, Object.keys(this.choices), 0);
         return this.solutions;
+    }
+
+    /**
+     * Clears the state of the solver
+     */
+    clear(): void {
+        this.choices = {};
+        this.constraints = [];
+        this.solutions = [];
     }
 
     /**
