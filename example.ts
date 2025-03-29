@@ -37,18 +37,18 @@ let adjacencyList = {
     "f": ["a", "d", "e"]
 }
 
-type Node = keyof typeof adjacencyList; // "a" | "b" | "c" | "d" | "e" | "f"
+type Node = keyof typeof adjacencyList; // "a" | "b" | "c" | "d" | "e" | "f "
+const nodes = Object.keys(adjacencyList) as Node[];
 
-Object.keys(adjacencyList).forEach(key => lamb2.addChoice(key, colors));
+// Add the same color choices for each node in the graph
+nodes.forEach(node => lamb2.addChoice(node, colors));
 
-lamb2.addConstraint((vars) => {
-    for (const key of Object.keys(adjacencyList)) {
-        let keyColor = vars[key];
-        let adjacentColors = adjacencyList[key as Node].map(v => vars[v]);
-        if (adjacentColors.includes(keyColor)) return false;
-    }
-    return true;
-});
+// The only constraint we have is that each node must not share colors with its neighbours
+lamb2.addConstraint((colors) =>
+    !nodes.some(node =>
+        adjacencyList[node].some(neighbour => colors[neighbour] === colors[node])
+    )
+);
 
 let results2 = lamb2.solve(1);
 console.log("A solution to the map coloring problem with 4 colors: ");
