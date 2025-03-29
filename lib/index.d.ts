@@ -2,7 +2,7 @@
  * Lamb(iguous)
  * A generalized backtracking search library
  *
- * https://github.com/kumarpit/lamb.js
+ * https://github.com/kumarpit/lamb
  */
 /**
  * Represents a predicate function that evaluates a set of variable assignments against some constraint

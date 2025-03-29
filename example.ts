@@ -1,6 +1,6 @@
 import Lamb from "./index";
 
-let solver1 = new Lamb<number>();
+let lamb1 = new Lamb<number>();
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -8,11 +8,11 @@ let solver1 = new Lamb<number>();
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-solver1.addChoice("x", [1, 2, 3, 4, 5]);
-solver1.addChoice("y", [1, 2, 3, 4, 5]);
-solver1.addConstraint((vars) => vars.x + vars.y == 7);
+lamb1.addChoice("x", [0, 1, 2, 3, 4]);
+lamb1.addChoice("y", [5, 6, 7, 8, 9]);
+lamb1.addConstraint((vars) => vars.x + vars.y == 8);
 
-let results1 = solver1.solve();
+let results1 = lamb1.solve();
 console.log("Pairs that sum to 7 from lists of 1..5: ");
 results1.forEach(assignment => console.log(assignment));
 
@@ -25,7 +25,7 @@ console.log("\n");
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-let solver2 = new Lamb<string>();
+let lamb2 = new Lamb<string>();
 
 const colors = ["red", "green", "blue", "yellow"];
 let adjacencyList = {
@@ -39,9 +39,9 @@ let adjacencyList = {
 
 type Node = keyof typeof adjacencyList; // "a" | "b" | "c" | "d" | "e" | "f"
 
-Object.keys(adjacencyList).forEach(key => solver2.addChoice(key, colors));
+Object.keys(adjacencyList).forEach(key => lamb2.addChoice(key, colors));
 
-solver2.addConstraint((vars) => {
+lamb2.addConstraint((vars) => {
     for (const key of Object.keys(adjacencyList)) {
         let keyColor = vars[key];
         let adjacentColors = adjacencyList[key as Node].map(v => vars[v]);
@@ -50,6 +50,6 @@ solver2.addConstraint((vars) => {
     return true;
 });
 
-let results2 = solver2.solve(1);
+let results2 = lamb2.solve(1);
 console.log("A solution to the map coloring problem with 4 colors: ");
 results2.forEach(assignment => console.log(assignment));
