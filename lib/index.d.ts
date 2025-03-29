@@ -5,7 +5,7 @@
  * https://github.com/kumarpit/lamb.js
  */
 /**
- * Represents a constraint function that evaluates a set of variable assignments
+ * Represents a predicate function that evaluates a set of variable assignments against some constraint
  * @template T The type of values that variables can take
  * @param vars A record of variable names to their values
  * @returns true if the given assignment satisfies the constraint, else false

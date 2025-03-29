@@ -8,7 +8,7 @@
 import { DuplicateVariableError, EmptyChoicesError, EmptyVariablesError, InvalidNumSolutions, InvalidVariableNameError } from './error';
 
 /**
- * Represents a constraint function that evaluates a set of variable assignments
+ * Represents a predicate function that evaluates a set of variable assignments against some constraint
  * @template T The type of values that variables can take
  * @param vars A record of variable names to their values 
  * @returns true if the given assignment satisfies the constraint, else false
@@ -78,7 +78,7 @@ class Lamb<T> {
         if (Object.keys(this.choices).length === 0) {
             throw new EmptyVariablesError("You must have atleast one variable defined to solve a problem");
         }
-        if (numSolutionsRequested) {
+        if (numSolutionsRequested !== undefined) {
             if (numSolutionsRequested <= 0) {
                 throw new InvalidNumSolutions("You must request atleast 1 solution");
             }
