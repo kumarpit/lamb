@@ -2,7 +2,7 @@
  * Lamb(iguous)
  * A generalized backtracking search library
  * 
- * https://github.com/kumarpit/lamb.js
+ * https://github.com/kumarpit/lamb
  */
 
 import { DuplicateVariableError, EmptyChoicesError, EmptyVariablesError, InvalidNumSolutions, InvalidVariableNameError } from './error';

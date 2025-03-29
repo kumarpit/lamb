@@ -38,6 +38,11 @@ describe("Lamb Constraint Solver", () => {
         expect(() => solver.solve()).toThrow(EmptyVariablesError);
     });
 
+    test("should throw if variable name is an empty string or just whitespaces", () => {
+        expect(() => solver.addChoice("", [1])).toThrow(InvalidVariableNameError);
+        expect(() => solver.addChoice("  ", [1])).toThrow(InvalidVariableNameError);
+    })
+
     test("should throw error if solve is called with invalid numSolutions", () => {
         solver.addChoice("x", [1, 2, 3]);
         expect(() => solver.solve(0)).toThrow(InvalidNumSolutions);
