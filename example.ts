@@ -37,12 +37,14 @@ let adjacencyList = {
     "f": ["a", "d", "e"]
 }
 
+type Node = keyof typeof adjacencyList; // "a" | "b" | "c" | "d" | "e" | "f"
+
 Object.keys(adjacencyList).forEach(key => solver2.addChoice(key, colors));
 
 solver2.addConstraint((vars) => {
     for (const key of Object.keys(adjacencyList)) {
         let keyColor = vars[key];
-        let adjacentColors = (adjacencyList as { [_: string]: string[] })[key].map(v => vars[v]);
+        let adjacentColors = adjacencyList[key as Node].map(v => vars[v]);
         if (adjacentColors.includes(keyColor)) return false;
     }
     return true;
@@ -51,5 +53,3 @@ solver2.addConstraint((vars) => {
 let results2 = solver2.solve(1);
 console.log("A solution to the map coloring problem with 4 colors: ");
 results2.forEach(assignment => console.log(assignment));
-
-console.log("\n");
