@@ -50,23 +50,49 @@ let adjacencyList = {
     "f": ["a", "d", "e"]
 }
 
-type Node = keyof typeof adjacencyList; // "a" | "b" | "c" | "d" | "e" | "f"
-Object.keys(adjacencyList).forEach(key => lamb.addChoice(key, colors));
-lamb.addConstraint((vars) => {
-    for (const key of Object.keys(adjacencyList)) {
-        let keyColor = vars[key];
-        let adjacentColors = adjacencyList[key as Node].map(v => vars[v]);
-        if (adjacentColors.includes(keyColor)) return false;
-    }
-    return true;
-});
+type Node = keyof typeof adjacencyList; // "a" | "b" | "c" | "d" | "e" | "f "
+const nodes = Object.keys(adjacencyList) as Node[];
 
-lamb.solve(1);
+// Add the same color choices for each node in the graph
+nodes.forEach(node => lamb.addChoice(node, colors));
+
+// The only constraint we have is that each node must not share colors with its neighbours
+lamb.addConstraint((colors) =>
+    !nodes.some(node =>
+        adjacencyList[node].some(neighbour => colors[neighbour] === colors[node])
+    )
+);
+
+lamb2.solve(1);
 ```
 
 We represent the graph as a adjacency list, and for each node, we need add the same choice of colors. The only constraint we have is that each node must not have the same colors as its neighbours.
 
-Hopefully these examples were helpful in explaining the usage of Lamb. It is a really tiny library so feel free to explore the source code and make a PR if you find bugs or if you have any feature requests.
+Finally, here is a program that solves the [8 queens problem](https://en.wikipedia.org/wiki/Eight_queens_puzzle):
+
+```Javascript
+let lamb = new Lamb<number>();
+
+const N = 8;
+for (let i = 0; i < N; i++) {
+    // only assign columns since the row assignments are implicit (i.e must be 1, 2, 3,..., 8)
+    lamb.addChoice("col" + i, [...Array(N)].map((_, j) => j + 1));
+}
+
+lamb.addConstraint((positions) =>
+    ![...Array(N)].some((_, i) =>
+        [...Array(i)].some((_, j) => // only check columns < i
+            positions["col" + i] === positions["col" + j] || // same row?
+            Math.abs(i - j) === Math.abs(positions["col" + i] - positions["col" + j]) // same diagonal?
+        )
+    )
+);
+
+lamb.solve(1);
+```
+
+
+Hopefully these examples were helpful in conveying the utility of Lamb. It is a really tiny library so feel free to explore the source code and make a PR if you find bugs or if you have any feature requests.
 
 
 
