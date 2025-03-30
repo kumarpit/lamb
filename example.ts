@@ -54,6 +54,8 @@ let results2 = lamb2.solve(1);
 console.log("A solution to the map coloring problem with 4 colors: ");
 results2.forEach(assignment => console.log(assignment));
 
+console.log("\n");
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Solving the 8 Queens problem
@@ -64,17 +66,19 @@ let lamb3 = new Lamb<number>();
 
 const N = 8;
 for (let i = 0; i < N; i++) {
+    // only assign columns since the row assignments are implicit (i.e must be 1, 2, 3,..., 8)
     lamb3.addChoice("col" + i, [...Array(N)].map((_, j) => j + 1));
 }
 
-lamb3.addConstraint((positions) => {
-    return ![...Array(N)].some((_, i) =>
-        [...Array(i)].some((_, j) =>
-            positions["col" + i] === positions["col" + j] ||
-            Math.abs(i - j) === Math.abs(positions["col" + i] - positions["col" + j])
+lamb3.addConstraint((positions) =>
+    ![...Array(N)].some((_, i) =>
+        [...Array(i)].some((_, j) => // only check columns < i
+            positions["col" + i] === positions["col" + j] || // same row?
+            Math.abs(i - j) === Math.abs(positions["col" + i] - positions["col" + j]) // same diagonal?
         )
     )
-});
+);
 
-let results = lamb3.solve();
-results.forEach(position => console.log(position));
+let result = lamb3.solve(1);
+console.log("A solution to the 8 queen problem:")
+console.log(result);
