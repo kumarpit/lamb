@@ -5,6 +5,11 @@
     "main": "./lib/index.js",
     "author": "Arpit Kumar (kumar.arpit77@yahoo.com)",
     "license": "MIT",
+    "keywords": [
+        "backtracking",
+        "amb",
+        "functional programming"
+    ],
     "scripts": {
         "test": "jest"
     },
